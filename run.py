@@ -114,12 +114,15 @@ if __name__=='__main__':
             else:
                 mask = 'epi'
         bold_prep_kwargs = {'standardize': args.standardize, 'detrend': args.detrend}
-        ridges, scores, mask = run_model_for_subject(subject_label, mask=mask,
+        ridges, scores, mask, bold_prediction, train_indices, test_indices = run_model_for_subject(subject_label, mask=mask,
                                                bold_prep_kwargs=bold_prep_kwargs,
                                                encoding_kwargs=encoding_kwargs, **vars(args))
 
         filename_output = create_output_filename_from_args(subject_label, **vars(args))
         joblib.dump(ridges, os.path.join(args.output_dir, '{0}_{1}ridges.pkl'.format(filename_output, identifier)))
+        joblib.dump(bold_prediction, os.path.join(args.output_dir, '{0}_{1}bold_prediction.pkl'.format(filename_output, identifier)))
+        joblib.dump(train_indices, os.path.join(args.output_dir, '{0}_{1}train_indices.pkl'.format(filename_output, identifier)))
+        joblib.dump(test_indices, os.path.join(args.output_dir, '{0}_{1}test_indices.pkl'.format(filename_output, identifier)))
 
         if mask:
             scores_bold = concat_imgs([unmask(scores_fold, mask) for scores_fold in scores.T])

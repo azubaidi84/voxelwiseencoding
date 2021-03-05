@@ -247,7 +247,7 @@ def run_model_for_subject(subject_label, bids_dir, mask=None, bold_prep_kwargs=N
         stim_TR, start_times=start_times, **preprocess_kwargs)
 
     # compute ridge and scores for folds
-    models, scores = get_model_plus_scores(stimuli, preprocessed_data,
+    models, scores, bold_prediction, train_indices, test_indices = get_model_plus_scores(stimuli, preprocessed_data,
                                            estimator=estimator,
                                            **encoding_kwargs)
-    return models, scores, mask
+    return models, scores, mask, bold_prediction, train_indices, test_indices

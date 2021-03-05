@@ -72,6 +72,9 @@ def get_model_plus_scores(X, y, estimator=None, cv=None, scorer=None,
     if validate:
         for train, test in cv.split(X, y):
             models.append(copy.deepcopy(estimator).fit(X[train], y[train]))
+            bold_prediction.append(models[-1].predict(X[test]))
+            train_indices.append(train)
+            test_indices.append(test)
             if voxel_selection:
                 scores = np.zeros_like(voxel_var)
                 scores[voxel_var > 0.] =  scorer(y[test], models[-1].predict(X[test]))
@@ -82,7 +85,7 @@ def get_model_plus_scores(X, y, estimator=None, cv=None, scorer=None,
     else:
         models = estimator.fit(X, y)
         score_list = scorer(y, estimator.predict(X))
-    return models, score_list
+    return models, score_list, bold_prediction, train_indices, test_indices
 
 # Cell
 
