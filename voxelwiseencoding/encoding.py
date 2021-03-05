@@ -63,6 +63,9 @@ def get_model_plus_scores(X, y, estimator=None, cv=None, scorer=None,
         cv = KFold(n_splits=cv)
     models = []
     score_list = []
+    bold_prediction = []
+    train_indices = []
+    test_indices = []
     if estimator is None:
         estimator = RidgeCV(**kwargs)
 
