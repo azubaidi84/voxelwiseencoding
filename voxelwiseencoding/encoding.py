@@ -85,7 +85,7 @@ def get_model_plus_scores(X, y, estimator=None, cv=None, scorer=None,
                 scores = scorer(y[test], models[-1].predict(X[test]))
             score_list.append(scores[:, None])
         score_list = np.concatenate(score_list, axis=-1)
-        bold_prediction = np.concatenate(bold_prediction, axis=-1)
+        bold_prediction = np.concatenate(bold_prediction, axis=0)
     else:
         models = estimator.fit(X, y)
         score_list = scorer(y, estimator.predict(X))

@@ -120,16 +120,17 @@ if __name__=='__main__':
 
         filename_output = create_output_filename_from_args(subject_label, **vars(args))
         joblib.dump(ridges, os.path.join(args.output_dir, '{0}_{1}ridges.pkl'.format(filename_output, identifier)))
-        joblib.dump(bold_prediction, os.path.join(args.output_dir, '{0}_{1}bold_prediction.pkl'.format(filename_output, identifier)))
+        #joblib.dump(bold_prediction, os.path.join(args.output_dir, '{0}_{1}bold_prediction.pkl'.format(filename_output, identifier)))
         joblib.dump(train_indices, os.path.join(args.output_dir, '{0}_{1}train_indices.pkl'.format(filename_output, identifier)))
         joblib.dump(test_indices, os.path.join(args.output_dir, '{0}_{1}test_indices.pkl'.format(filename_output, identifier)))
 
         if mask:
             scores_bold = concat_imgs([unmask(scores_fold, mask) for scores_fold in scores.T])
+            bold_prediction_nifti = concat_imgs([unmask(bold, mask) for bold in bold_prediction])
 
         save(scores_bold, os.path.join(args.output_dir, '{0}_{1}scores.nii.gz'.format(filename_output, identifier)))
 
-        save(bold_prediction, os.path.join(args.output_dir, '{0}_{1}bold_prediction.nii.gz'.format(filename_output, identifier)))
+        save(bold_prediction_nifti, os.path.join(args.output_dir, '{0}_{1}bold_prediction.nii.gz'.format(filename_output, identifier)))
 
         if args.log:
             # check if we computed an epi mask
