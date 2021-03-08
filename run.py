@@ -128,6 +128,9 @@ if __name__=='__main__':
             scores_bold = concat_imgs([unmask(scores_fold, mask) for scores_fold in scores.T])
 
         save(scores_bold, os.path.join(args.output_dir, '{0}_{1}scores.nii.gz'.format(filename_output, identifier)))
+
+        save(bold_prediction, os.path.join(args.output_dir, '{0}_{1}bold_prediction.nii.gz'.format(filename_output, identifier)))
+
         if args.log:
             # check if we computed an epi mask
             if mask=='epi':
