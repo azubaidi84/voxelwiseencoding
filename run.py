@@ -28,8 +28,8 @@ def run(command, env={}):
             break
     if process.returncode != 0:
         raise Exception("Non zero return code: {}".format(process.returncode))
+def main():
 
-if __name__=='__main__':
     __version__ = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                 'version')).read()
     parser = argparse.ArgumentParser(description='Voxelwise Encoding BIDS App.')
@@ -142,3 +142,5 @@ if __name__=='__main__':
                 json.dump({'bold_preprocessing': bold_prep_kwargs,
                            'stimulus_preprocessing': preprocess_kwargs,
                            'encoding': encoding_kwargs}, fl)
+if __name__=='__main__':
+    main()
