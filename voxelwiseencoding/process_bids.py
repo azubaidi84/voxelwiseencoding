@@ -242,12 +242,13 @@ def run_model_for_subject(subject_label, bids_dir, mask=None, bold_prep_kwargs=N
     stim_TR = 1. / stim_meta[0]['SamplingFrequency']
 
     # temporally align stimulus and fmri data
-    stimuli, preprocessed_data = make_X_Y(
+    stimuli, preprocessed_data, run_start_indices = make_X_Y(
         stimuli, preprocessed_data, task_meta['RepetitionTime'],
         stim_TR, start_times=start_times, **preprocess_kwargs)
 
     # compute ridge and scores for folds
-    models, scores, bold_prediction, train_indices, test_indices = get_model_plus_scores(stimuli, preprocessed_data,
-                                           estimator=estimator,
-                                           **encoding_kwargs)
+    models, scores, bold_prediction, train_indices, test_indices = \
+        get_model_plus_scores(stimuli, preprocessed_data, estimator=estimator, 
+                              run_start_indices=run_start_indices,
+                              **encoding_kwargs)
     return models, scores, mask, bold_prediction, train_indices, test_indices

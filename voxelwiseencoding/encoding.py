@@ -28,7 +28,8 @@ def product_moment_corr(x,y):
 # Cell
 
 def get_model_plus_scores(X, y, estimator=None, cv=None, scorer=None,
-                          voxel_selection=True, validate=True, **kwargs):
+                          voxel_selection=True, validate=True, 
+                          run_start_indices=None, **kwargs):
     '''Returns multiple estimator trained in a cross-validation on n_splits of the data and scores on the left-out folds
 
     Parameters
@@ -57,9 +58,12 @@ def get_model_plus_scores(X, y, estimator=None, cv=None, scorer=None,
     from sklearn.utils.estimator_checks import check_regressor_multioutput
     if scorer is None:
         scorer = product_moment_corr
-    if cv is None:
+    if run_start_indices is not None:
+        from leave_one_run_out_splitter import LeaveOneRunOutSplitter
+        cv = LeaveOneRunOutSplitter(run_start_indices)
+    elif cv is None:
         cv = KFold()
-    if isinstance(cv, int):
+    elif isinstance(cv, int):
         cv = KFold(n_splits=cv)
     models = []
     score_list = []

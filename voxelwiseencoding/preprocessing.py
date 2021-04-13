@@ -191,6 +191,8 @@ def make_X_Y(stimuli, fmri, TR, stim_TR, lag_time=6.0, start_times=None, offset_
 
     lagged_stimuli = []
     aligned_fmri = []
+    run_start_indices = []
+    start_index = 0
     for i, (stimulus, fmri_run) in enumerate(zip(stimuli, fmri)):
         stimulus = generate_lagged_stimulus(
             stimulus, fmri_run.shape[0], TR, stim_TR, lag_time=lag_time,
@@ -217,4 +219,6 @@ def make_X_Y(stimuli, fmri, TR, stim_TR, lag_time=6.0, start_times=None, offset_
                 stimulus = stimulus[:-(stimulus.shape[0]-fmri_run.shape[0])]
         lagged_stimuli.append(stimulus)
         aligned_fmri.append(fmri_run)
-    return np.vstack(lagged_stimuli), np.vstack(aligned_fmri)
+        run_start_indices.append(start_index)
+        start_index += stimulus.shape[0]
+    return np.vstack(lagged_stimuli), np.vstack(aligned_fmri), run_start_indices
